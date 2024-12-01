@@ -1,6 +1,6 @@
 # Intellij Files
 /.idea
-.iml
+*.iml
 
 # AOC Input files
 /input.txt
