@@ -7,32 +7,27 @@ main = do
         reports = readReport reportStrings
         isSafe = map checkIfSafe reports
         result = length (filter id isSafe)
-        reportsWithResults = zip3 reports isSafe (map checkIfSafeOld reports)
 
-    mapM_ print reportsWithResults
     print result
 
 readReport :: [String] -> [[Int]]
 readReport = map (map read . words)
 
-checkIfSafeOld :: [Int] -> Bool
-checkIfSafeOld report =
-    all (\(x1, x2) -> x2 > x1 && x2 - x1 <= 3) (zip report (tail report))
-    || all (\(x1, x2) -> x2 < x1 && x1 - x2 <= 3) (zip report (tail report))
-
 checkIfSafe :: [Int] -> Bool
-checkIfSafe report = checkIncreasing report False || checkDecreasing report False || checkIncreasing (tail report) True || checkDecreasing (tail report) True
-  where
-    checkIncreasing [_] _ = True -- any single element is good
-    checkIncreasing (first:second:remainder) removed
-      | second > first && second - first <= 3 = checkIncreasing (second:remainder) removed
-      | not removed = -- not used the buffer yet
-          checkIncreasing (first:remainder) True
-      | otherwise = False
+checkIfSafe report = checkIncreasing report [] False || checkDecreasing report [] False
+    where
+        checkIncreasing :: [Int] -> [Int] -> Bool -> Bool
+        checkIncreasing [_] _ _ = True -- too little remaining to compare
+        checkIncreasing (prev:current:remainder) head removed
+            | prev < current && current - prev <= 3 = checkIncreasing (current:remainder) (head ++ [prev]) removed
+            | not removed = -- not used the buffer yet
+                checkIncreasing (head ++ [prev] ++ remainder) [] True || checkIncreasing (head ++ [current] ++ remainder) [] True
+            | otherwise = False
 
-    checkDecreasing [_] _ = True
-    checkDecreasing (first:second:remainder) removed
-      | second < first && first - second <= 3 = checkDecreasing (second:remainder) removed
-      | not removed =
-          checkDecreasing (first:remainder) True
-      | otherwise = False
+        checkDecreasing :: [Int] -> [Int] -> Bool -> Bool
+        checkDecreasing [_] _ _ = True
+        checkDecreasing (prev:current:remainder) head removed
+            | prev > current && prev - current <= 3 = checkDecreasing (current:remainder) (head ++ [prev]) removed
+            | not removed =
+                checkDecreasing (head ++ [prev] ++ remainder) [] True || checkDecreasing (head ++ [current] ++ remainder) [] True
+            | otherwise = False
