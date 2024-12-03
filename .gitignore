@@ -5,3 +5,6 @@
 # AOC Input files
 /input.txt
 /test.txt
+
+# cabal files
+/dist-newstyle
