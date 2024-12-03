@@ -2,6 +2,6 @@
 
 [![About](https://img.shields.io/badge/Advent%20of%20Code%20🎄-2024-brightgreen)](https://adventofcode.com/2024/about)
 [![Language](https://img.shields.io/badge/Language-haskell-purple)](https://www.haskell.org/)
-![](https://img.shields.io/badge/day%20📅-1-blue) 
-![](https://img.shields.io/badge/stars%20⭐-1-yellow) 
-![](https://img.shields.io/badge/days%20completed-1-red)
+![](https://img.shields.io/badge/day%20📅-3-blue) 
+![](https://img.shields.io/badge/stars%20⭐-6-yellow) 
+![](https://img.shields.io/badge/days%20completed-3-red)
