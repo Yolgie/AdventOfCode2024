@@ -2,14 +2,13 @@ import Data.Char (isDigit, digitToInt)
 
 main :: IO ()
 main = do
-  contents <- readFile "test.txt"
+  contents <- readFile "input.txt"
   let input = convertToIdAtPositionList . addIndices . parseSingleDigits $ contents
-      defragmented = defragment input
+      targetLength = length (filter (\x -> x >= 0) input)
+      defragmented = defragment input targetLength
       multiplied = zipWith (\a b -> fromIntegral a * fromIntegral b) ([0..] :: [Int]) defragmented
       result = sum multiplied
 
-  print input
-  print defragmented
   print result
 
 parseSingleDigits :: String -> [Int]
@@ -25,11 +24,12 @@ convertToIdAtPositionList :: [(Int, Int)] -> [Int]
 convertToIdAtPositionList = concatMap (\(blockId, size) -> replicate size blockId)
 
 -- defragment by always taking the last block to fill empty space (denoted by -1)
-defragment :: [Int] -> [Int]
-defragment = defragment' []
+defragment :: [Int] -> Int -> [Int]
+defragment input targetLenght = defragment' [] input (reverse input) targetLenght
 
-defragment' :: [Int] -> [Int] -> [Int]
-defragment' acc [] = acc
-defragment' acc input  | last input == -1 = defragment' acc (init input)
-defragment' acc (x:xs) | x == -1 = defragment' (acc ++ [last xs]) (init xs)
-                       | otherwise = defragment' (acc ++ [x]) xs
+defragment' :: [Int] -> [Int] -> [Int] -> Int -> [Int]
+defragment' acc _ _ 0 = reverse acc
+defragment' acc input (y:ys) currentCount  | y == -1 = defragment' acc input ys currentCount
+defragment' acc (x:xs) (y:ys) currentCount | x /= -1 = defragment' (x:acc) xs (y:ys) (currentCount -1)
+                                           | x == -1 = defragment' (y:acc) xs ys (currentCount -1)
+defragment' acc _ _ _ = reverse acc
