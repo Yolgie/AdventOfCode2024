@@ -58,7 +58,7 @@ executable aoc
     import:           warnings
 
     -- .hs or .lhs file containing the Main module.
-    main-is:          aoc4_1.hs
+    main-is:          aoc11_2.hs
 
     -- Modules included in this executable, other than Main.
     -- other-modules:
@@ -67,7 +67,7 @@ executable aoc
     -- other-extensions:
 
     -- Other library packages from which modules are imported.
-    build-depends:    base ^>=4.17.2.1, regex-base, regex-tdfa
+    build-depends:    base, regex-base, regex-tdfa, split
 
     -- Directories containing source files.
     hs-source-dirs:   app
